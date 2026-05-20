@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = EntityConstant.ROLE_ENTITY)
+@Table(name = EntityConstant.ROLE)
 @Getter
 @Setter
 @NoArgsConstructor

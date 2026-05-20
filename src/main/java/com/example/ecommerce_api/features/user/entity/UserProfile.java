@@ -8,7 +8,7 @@ import lombok.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = EntityConstant.USER_PROFILE_ENTITY)
+@Table(name = EntityConstant.USER_PROFILE)
 @Getter
 @Setter
 @NoArgsConstructor

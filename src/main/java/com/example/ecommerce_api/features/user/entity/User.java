@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = EntityConstant.USER_ENTITY)
+@Table(name = EntityConstant.USER)
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
