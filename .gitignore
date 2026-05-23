@@ -5,8 +5,8 @@ target/
 !**/src/test/**/target/
 
 !.env.example
-.env.production
-.env.development
+.env.prod
+.env.dev
 
 
 ### STS ###

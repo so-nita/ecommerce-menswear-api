@@ -1,6 +1,6 @@
 spring:
   config:
-    import: optional:file:.env.development[.properties]
+    import: optional:file:.env.dev[.properties]
 
   application:
     name: ecommerce-api
@@ -14,7 +14,7 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      #      ddl-auto: update
+#      ddl-auto: update
       ddl-auto: validate   # Flyway manages schema, Hibernate only validates
     show-sql: true
     properties:
@@ -35,4 +35,4 @@ app:
     issuer: ecommerce-api
 
 server:
-  port: ${SERVER_PORT:8080}
+  port: ${SERVER_PORT:8081}

@@ -1,6 +1,6 @@
 spring:
   config:
-    import: optional:file:.env.production[.properties]
+    import: optional:file:.env.prod[.properties]
 
   application:
     name: ecommerce-api
