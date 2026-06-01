@@ -21,6 +21,6 @@ public class UserProfile {
     private UUID id;
 
     @OneToOne
-    @JoinColumn(name = ForeignKeyConstant.FK_USER_ID, nullable = false)
+    @JoinColumn(name = ForeignKeyConstant.USER_ID, nullable = false)
     private User user;
 }

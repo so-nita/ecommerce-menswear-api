@@ -2,17 +2,23 @@ package com.example.ecommerce_api.features.address.entity;
 
 import com.example.ecommerce_api.constant.EntityConstant;
 import com.example.ecommerce_api.constant.ForeignKeyConstant;
+import com.example.ecommerce_api.contract.BaseEntity;
 import com.example.ecommerce_api.features.user.entity.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.util.UUID;
 
 @Entity
 @Table(name = EntityConstant.ADDRESS)
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
-public class Address {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Address extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -21,6 +27,6 @@ public class Address {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = ForeignKeyConstant.FK_USER_ID, nullable = false)
+    @JoinColumn(name = ForeignKeyConstant.USER_ID, nullable = false)
     private User user;
 }
