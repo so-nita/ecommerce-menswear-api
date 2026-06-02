@@ -11,7 +11,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = EntityConstant.CATEGORY)
@@ -29,6 +28,8 @@ public class Category extends BaseEntity {
 
     @Column(nullable = true)
     private String description;
+
+    private String imageId;
 
     @OneToMany(mappedBy = MapByConstant.CATEGORY, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Item> items = new ArrayList<>();
