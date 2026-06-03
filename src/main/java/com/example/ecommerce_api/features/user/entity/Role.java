@@ -2,7 +2,13 @@ package com.example.ecommerce_api.features.user.entity;
 
 import com.example.ecommerce_api.constant.EntityConstant;
 import com.example.ecommerce_api.contract.BaseEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -24,7 +30,4 @@ public class Role extends BaseEntity {
 
     @Column(length = 200)
     private String description;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
 }

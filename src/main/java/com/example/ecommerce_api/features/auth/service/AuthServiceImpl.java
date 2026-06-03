@@ -3,9 +3,11 @@ package com.example.ecommerce_api.features.auth.service;
 import com.example.ecommerce_api.common.dto.ApiResponse;
 import com.example.ecommerce_api.features.auth.dto.RefreshTokenReq;
 import com.example.ecommerce_api.features.auth.dto.SignInReq;
-import com.example.ecommerce_api.features.auth.dto.AuthRes;
-import com.example.ecommerce_api.features.auth.dto.SignUpReq;
+import com.example.ecommerce_api.features.auth.dto.AuthResponse;
+import com.example.ecommerce_api.features.auth.dto.RegisterReq;
 import com.example.ecommerce_api.features.user.entity.User;
+import com.example.ecommerce_api.features.user.entity.UserProfile;
+import com.example.ecommerce_api.features.user.repository.RoleRepository;
 import com.example.ecommerce_api.features.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,10 +24,11 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final RoleRepository roleRepository;
 
     @Override
     @Transactional(readOnly = true)
-    public ApiResponse<AuthRes> SignInAsync(SignInReq request) {
+    public ApiResponse<AuthResponse> SignInAsync(SignInReq request) {
         try {
             Optional<User> userFound = userRepository.findByUsername(request.username()).filter((e)-> !e.isDeleted());
             if(userFound.isEmpty()){
@@ -38,15 +41,19 @@ public class AuthServiceImpl implements AuthService {
                 return ApiResponse.Unauthorized("Invalid credentials");
             }
 
+            String jwtId = UUID.randomUUID().toString();
             String accessToken = jwtService.generateAccessToken(user);
             String refreshToken = jwtService.generateRefreshToken(user);
 
-            AuthRes response = new AuthRes(
-                    UUID.randomUUID().toString(),
+            var accessTokenExpire = jwtService.getExpiration(accessToken);
+            var refreshTokenExpire = jwtService.getExpiration(refreshToken);
+
+            AuthResponse response = new AuthResponse(
+                    jwtId,
                     accessToken,
                     refreshToken,
-                    jwtService.getExpiration(accessToken),
-                    jwtService.getExpiration(refreshToken)
+                    accessTokenExpire,
+                    refreshTokenExpire
             );
 
             return ApiResponse.OK(response);
@@ -56,16 +63,43 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ApiResponse<AuthRes> SignUpAsync(SignUpReq request) {
+    public ApiResponse<AuthResponse> RegisterAsync(RegisterReq request) {
         try {
-            return null;
+            if (userRepository.existsByUsername(request.username())) {
+                return ApiResponse.BadRequest("Username already exists");
+            }
+
+            var role = roleRepository.findFirstByName("CUSTOMER")
+                    .orElseThrow(() -> new IllegalStateException("Role CUSTOMER not found"));
+
+            var newUser = User.builder()
+                    .username(request.username())
+                    .passwordHash(passwordEncoder.encode(request.password()))
+                    .phoneNumber(request.phone())
+                    .role(role)
+                    .build();
+
+            userRepository.save(newUser);
+
+            String accessToken = jwtService.generateAccessToken(newUser);
+            String refreshToken = jwtService.generateRefreshToken(newUser);
+
+            var response = new AuthResponse(
+                    UUID.randomUUID().toString(),
+                    accessToken,
+                    refreshToken,
+                    jwtService.getExpiration(accessToken),
+                    jwtService.getExpiration(refreshToken)
+            );
+
+            return ApiResponse.Created(response, "Registered successfully");
         } catch (Exception e) {
             return ApiResponse.InternalServerError(e.getMessage());
         }
     }
 
     @Override
-    public ApiResponse<AuthRes> RefreshAsync(RefreshTokenReq refreshToken) {
+    public ApiResponse<AuthResponse> RefreshAsync(RefreshTokenReq refreshToken) {
         try {
             return null;
         } catch (Exception e) {

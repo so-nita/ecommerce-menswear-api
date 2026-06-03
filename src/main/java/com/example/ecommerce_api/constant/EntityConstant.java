@@ -13,7 +13,7 @@ public class EntityConstant {
     public static final String ITEM_DETAILS = "item_details";
     public static final String CATEGORY = "categories";
 
-    public static final String IMAGE = "images";
+    public static final String FILE = "files";
 
     public static final String ORDER = "orders";
     public static final String ORDER_ITEM = "order_items";

@@ -3,9 +3,8 @@ package com.example.ecommerce_api.features.auth.dto;
 import jakarta.annotation.Nullable;
 
 import java.time.Instant;
-import java.util.Date;
 
-public record AuthRes(
+public record AuthResponse(
         String jwtId,
         String accessToken,
         String refreshToken,

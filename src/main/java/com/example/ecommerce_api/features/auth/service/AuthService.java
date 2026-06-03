@@ -3,11 +3,11 @@ package com.example.ecommerce_api.features.auth.service;
 import com.example.ecommerce_api.common.dto.ApiResponse;
 import com.example.ecommerce_api.features.auth.dto.RefreshTokenReq;
 import com.example.ecommerce_api.features.auth.dto.SignInReq;
-import com.example.ecommerce_api.features.auth.dto.AuthRes;
-import com.example.ecommerce_api.features.auth.dto.SignUpReq;
+import com.example.ecommerce_api.features.auth.dto.AuthResponse;
+import com.example.ecommerce_api.features.auth.dto.RegisterReq;
 
 public interface AuthService {
-    ApiResponse<AuthRes> SignInAsync(SignInReq request);
-    ApiResponse<AuthRes>  SignUpAsync(SignUpReq request);
-    ApiResponse<AuthRes> RefreshAsync(RefreshTokenReq refreshToken);
+    ApiResponse<AuthResponse> SignInAsync(SignInReq request);
+    ApiResponse<AuthResponse>  RegisterAsync(RegisterReq request);
+    ApiResponse<AuthResponse> RefreshAsync(RefreshTokenReq refreshToken);
 }

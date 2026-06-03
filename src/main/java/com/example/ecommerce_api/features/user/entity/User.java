@@ -41,7 +41,10 @@ public class User extends BaseEntity {
     private String phoneNumber;
 
     @Column()
+    @Builder.Default
     private boolean phoneNumberConfirmed = false;
+
+    private String imageId;
 
     @OneToMany(mappedBy = MapByConstant.USER, cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
@@ -51,11 +54,11 @@ public class User extends BaseEntity {
     @Builder.Default
     private UserProfile userProfile = new UserProfile();
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @Builder.Default
     private Role role = new Role();
 
-    @OneToMany(mappedBy = MapByConstant.USER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private List<File> orders = new ArrayList<>();
+    private List<File> files = new ArrayList<>();
 }

@@ -8,7 +8,7 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
-@Table(name = EntityConstant.IMAGE)
+@Table(name = EntityConstant.FILE)
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter

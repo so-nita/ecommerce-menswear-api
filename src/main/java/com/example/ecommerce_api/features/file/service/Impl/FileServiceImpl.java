@@ -7,11 +7,10 @@ import com.example.ecommerce_api.features.file.entity.File;
 import com.example.ecommerce_api.features.file.mapper.FileMapper;
 import com.example.ecommerce_api.features.file.repository.FileRepository;
 import com.example.ecommerce_api.features.file.service.FileService;
-import com.example.ecommerce_api.features.user.entity.User;
+import com.example.ecommerce_api.features.user.service.CurrentUserService;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +24,7 @@ public class FileServiceImpl implements FileService {
     private final FileMapper fileMapper;
     private final MinioClient minioClient;
     private final MinioConfig minioConfig;
+    private final CurrentUserService currentUserService;
 
     @Override
     public ApiResponse<FileResponse> getFile(String fileId) {
@@ -51,7 +51,7 @@ public class FileServiceImpl implements FileService {
                     .contentType(multipartFile.getContentType())
                     .build());
 
-            User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            var currentUser = currentUserService.get();
 
             File file = File.builder()
                     .originName(originalName)
