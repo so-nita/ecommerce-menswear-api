@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -14,7 +13,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    public User getUserById(UUID id){
+    public User getUserById(String id){
         try {
             Optional<User> userFound = userRepository.findById(id);
             if (userFound.isEmpty()){

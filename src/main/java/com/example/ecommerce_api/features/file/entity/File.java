@@ -20,7 +20,7 @@ public class File extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private User createdBy;
 
     @Column(nullable = false)
@@ -29,7 +29,7 @@ public class File extends BaseEntity {
     @Column(nullable = false)
     private String generatedName;
 
-    private String category;
+//    private String category;
     private String extension;
 
     @Column

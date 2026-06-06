@@ -38,4 +38,9 @@ minio:
   secret-key: ${MINIO_SECRET_KEY}
   bucket: ${MINIO_BUCKET}
 
-
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    issuer: ${JWT_ISSUER}
+    access-token-expiration: ${JWT_ACCESS_TOKEN_DURATION}
+    refresh-token-expiration: ${JWT_REFRESH_TOKEN_DURATION}

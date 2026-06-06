@@ -5,8 +5,6 @@ import com.example.ecommerce_api.constant.ForeignKeyConstant;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.UUID;
-
 @Entity
 @Table(name = EntityConstant.USER_PROFILE)
 @Getter
@@ -18,7 +16,7 @@ public class UserProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
 
     @OneToOne
     @JoinColumn(name = ForeignKeyConstant.USER_ID, nullable = false)

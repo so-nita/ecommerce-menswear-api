@@ -18,7 +18,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 // JWT filter — reads the header on every request
 @Slf4j
@@ -46,7 +45,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
 
             String userId = jwtService.extractUserId(token);
-            User user = userRepository.findById(UUID.fromString(userId)).orElse(null);
+            User user = userRepository.findWithRoleById(userId).orElse(null);
 
             if(user != null && !user.isDeleted() && SecurityContextHolder.getContext().getAuthentication() == null){
                 /* var authorities = user.getRoles().stream()

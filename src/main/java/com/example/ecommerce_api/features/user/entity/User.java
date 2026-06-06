@@ -2,31 +2,26 @@ package com.example.ecommerce_api.features.user.entity;
 
 import com.example.ecommerce_api.constant.EntityConstant;
 import com.example.ecommerce_api.constant.MapByConstant;
-import com.example.ecommerce_api.contract.BaseEntity;
+import com.example.ecommerce_api.contract.AuditEntity;
 import com.example.ecommerce_api.features.address.entity.Address;
 import com.example.ecommerce_api.features.file.entity.File;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.*;
 
 @Entity
 @Table(name = EntityConstant.USER)
-@EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User extends BaseEntity {
+public class User extends AuditEntity<String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-
-    @Column(nullable = false, unique = true, length = 50)
-    private String username;
 
     @Column(length = 100)
     private String firstName;
@@ -34,11 +29,13 @@ public class User extends BaseEntity {
     @Column(length = 100)
     private String lastName;
 
-    @Column(nullable = false)
-    private String passwordHash;
+    private String username;
+
+    @Column(nullable = false, unique = true, length = 50)
+    private String phoneNumber;
 
     @Column(nullable = false)
-    private String phoneNumber;
+    private String passwordHash;
 
     @Column()
     @Builder.Default
@@ -50,9 +47,8 @@ public class User extends BaseEntity {
     @Builder.Default
     private List<Address> addresses = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @Builder.Default
-    private UserProfile userProfile = new UserProfile();
+    @OneToOne(mappedBy = MapByConstant.USER, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private UserProfile userProfile;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @Builder.Default

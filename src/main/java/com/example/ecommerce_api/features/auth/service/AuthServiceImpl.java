@@ -30,9 +30,11 @@ public class AuthServiceImpl implements AuthService {
     @Transactional(readOnly = true)
     public ApiResponse<AuthResponse> SignInAsync(SignInReq request) {
         try {
-            Optional<User> userFound = userRepository.findByUsername(request.username()).filter((e)-> !e.isDeleted());
+            Optional<User> userFound = userRepository
+                    .findByUsernameOrPhoneNumber(request.identifier(), request.identifier())
+                    .filter((e)-> !e.isDeleted());
             if(userFound.isEmpty()){
-                return ApiResponse.Unauthorized("Incorrect username");
+                return ApiResponse.Unauthorized("Incorrect username or phone number");
             }
 
             User user = userFound.get();
@@ -65,19 +67,30 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ApiResponse<AuthResponse> RegisterAsync(RegisterReq request) {
         try {
-            if (userRepository.existsByUsername(request.username())) {
-                return ApiResponse.BadRequest("Username already exists");
+            if (userRepository.existsByUsername(request.phone())) {
+                return ApiResponse.BadRequest("Phone number already exists");
             }
 
-            var role = roleRepository.findFirstByName("CUSTOMER")
-                    .orElseThrow(() -> new IllegalStateException("Role CUSTOMER not found"));
+            String role = request.role().toString();
+            if (role.isEmpty()) {
+                return ApiResponse.Unauthorized("Role is required");
+            }
 
+            var roleFound = roleRepository.findFirstByName(role).orElseThrow(() -> new IllegalStateException("Role is invalid"));
+
+            var userName = request.firstName().toUpperCase() + request.lastName().toUpperCase();
             var newUser = User.builder()
-                    .username(request.username())
+                    .username(userName)
                     .passwordHash(passwordEncoder.encode(request.password()))
                     .phoneNumber(request.phone())
-                    .role(role)
+                    .firstName(request.firstName())
+                    .lastName(request.lastName())
+                    .role(roleFound)
                     .build();
+
+            var userProfile = new UserProfile();
+            userProfile.setUser(newUser);
+            newUser.setUserProfile(userProfile);
 
             userRepository.save(newUser);
 

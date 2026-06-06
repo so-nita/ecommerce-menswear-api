@@ -5,7 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 
 public record SignInReq(
         @NotBlank
-        String username,
+        @Schema(description = "Username or phone number")
+        String identifier,
 
         @NotBlank
         String password
