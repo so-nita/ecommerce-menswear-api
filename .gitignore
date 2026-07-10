@@ -4,11 +4,6 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-!.env.example
-.env.prod
-.env.dev
-
-
 ### STS ###
 .apt_generated
 .classpath
@@ -36,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+.env
+.env.prod
+.env.dev
+!.env.example
